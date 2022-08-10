@@ -33,6 +33,21 @@ class Database {
     }
   }
 
+  Future<void> editNote(
+      {required String title,
+      required String content,
+      required String id}) async {
+    try {
+      _db.collection("notes").doc(id).update({
+        "title": title,
+        "content": content,
+      }).onError((e, _) => print("Error writing document: $e"));
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<void> deleteNote(String noteId) async {
     try {
       _db.collection("notes").doc(noteId).delete();

@@ -19,11 +19,11 @@ class _EditScreenState extends State<EditScreen> {
   final _descriptionController = TextEditingController();
   dynamic argumentData = Get.arguments;
   String mode = 'View';
-
+  late Note data;
   void initState() {
     mode = argumentData[0]['mode'];
     if (argumentData[1]['data'] != null) {
-      Note data = argumentData[1]['data'];
+      data = argumentData[1]['data'];
       _titleController.text = data.title;
       _descriptionController.text = data.content;
     }
@@ -39,7 +39,14 @@ class _EditScreenState extends State<EditScreen> {
       Get.back();
     }
 
-    Future<void> editNote() async {}
+    Future<void> editNote() async {
+      await Database().editNote(
+        title: _titleController.text.trim(),
+        content: _descriptionController.text.trim(),
+        id: data.id,
+      );
+      Get.back();
+    }
 
     return Scaffold(
       appBar: AppBar(
