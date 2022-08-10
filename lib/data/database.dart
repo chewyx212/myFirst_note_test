@@ -20,6 +20,19 @@ class Database {
     });
   }
 
+  Future<void> addNote({required String title, required String content}) async {
+    try {
+      _db.collection("notes").doc().set({
+        "title": title,
+        "content": content,
+        "user": _user!.email,
+      }).onError((e, _) => print("Error writing document: $e"));
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<void> deleteNote(String noteId) async {
     try {
       _db.collection("notes").doc(noteId).delete();

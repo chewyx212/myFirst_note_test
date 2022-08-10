@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:map_exam/controller/noteController.dart';
 import 'package:get/get.dart';
 import 'package:map_exam/data/database.dart';
+import 'package:map_exam/edit_screen.dart';
 import 'package:map_exam/note.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -65,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                   NoteController(), // use it only first time on each controller
               builder: (_) {
                 return FloatingActionButton(
+                  heroTag: "btn1",
                   child: _.hideContent
                       ? Icon(Icons.menu)
                       : Icon(Icons.compare_arrows),
@@ -77,9 +79,15 @@ class HomeScreen extends StatelessWidget {
           /* Notes: for the "Show More" icon use: Icons.menu */
 
           FloatingActionButton(
+            heroTag: "btn2",
             child: const Icon(Icons.add),
             tooltip: 'Add a new note',
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => EditScreen(), arguments: [
+                {"mode": 'Add'},
+                {"data": null}
+              ]);
+            },
           ),
         ],
       ),
@@ -109,7 +117,12 @@ class NoteTile extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit, color: Colors.blue),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => EditScreen(), arguments: [
+                            {"mode": 'Edit'},
+                            {"data": data}
+                          ]);
+                        },
                       ),
                       IconButton(
                         icon: const Icon(
@@ -124,9 +137,16 @@ class NoteTile extends StatelessWidget {
                   ),
                 )
               : null,
-          title: Text(data.title),
+          title: GestureDetector(
+            onTap: () {
+              Get.to(() => EditScreen(), arguments: [
+                {"mode": 'View'},
+                {"data": data}
+              ]);
+            },
+            child: Text(data.title),
+          ),
           subtitle: noteController.hideContent ? null : Text(data.content),
-          onTap: () {},
           onLongPress: () {
             noteController.toggleEdit(data.id);
           },
