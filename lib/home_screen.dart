@@ -44,70 +44,13 @@ class HomeScreen extends StatelessWidget {
         init: NoteController(),
         builder: (NoteController noteController) {
           if (noteController != null && noteController.notes != null) {
-            return noteController.hideContent
-                ? ListView.separated(
-                    itemCount: noteController.notes.length,
-                    separatorBuilder: (context, index) => const Divider(
-                      color: Colors.blueGrey,
-                    ),
-                    itemBuilder: (context, index) => ListTile(
-                      trailing: SizedBox(
-                        width: 110.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.blue,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                      title: Text(noteController.notes[index].title),
-                      onTap: () {},
-                      onLongPress: () {},
-                    ),
-                  )
-                : ListView.separated(
-                    itemCount: noteController.notes.length,
-                    separatorBuilder: (context, index) => const Divider(
-                      color: Colors.blueGrey,
-                    ),
-                    itemBuilder: (context, index) => ListTile(
-                      // trailing: SizedBox(
-                      //   width: 110.0,
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.end,
-                      //     children: [
-                      //       IconButton(
-                      //         icon: const Icon(Icons.edit, color: Colors.blue),
-                      //         onPressed: () {},
-                      //       ),
-                      //       IconButton(
-                      //         icon: const Icon(
-                      //           Icons.delete,
-                      //           color: Colors.blue,
-                      //         ),
-                      //         onPressed: () {},
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      title: Text(noteController.notes[index].title),
-                      subtitle: noteController.hideContent
-                          ? null
-                          : Text(noteController.notes[index].content),
-                      onTap: () {},
-                      onLongPress: () {},
-                    ),
-                  );
+            return ListView.separated(
+              itemCount: noteController.notes.length,
+              separatorBuilder: (context, index) => const Divider(
+                color: Colors.blueGrey,
+              ),
+              itemBuilder: (context, index) => NoteTile(index: index),
+            );
           } else {
             return Text("loading...");
           }
@@ -139,6 +82,53 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class NoteTile extends StatelessWidget {
+  const NoteTile({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
+
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return GetX<NoteController>(
+      init: NoteController(),
+      builder: (noteController) {
+        Note data = noteController.notes[index];
+        return ListTile(
+          trailing: noteController.selected == data.id
+              ? SizedBox(
+                  width: 110.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.blue,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                )
+              : null,
+          title: Text(data.title),
+          subtitle: noteController.hideContent ? null : Text(data.content),
+          onTap: () {},
+          onLongPress: () {
+            noteController.toggleEdit(data.id);
+          },
+        );
+      },
     );
   }
 }
