@@ -19,4 +19,13 @@ class Database {
       return retVal;
     });
   }
+
+  Future<void> deleteNote(String noteId) async {
+    try {
+      _db.collection("notes").doc(noteId).delete();
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }

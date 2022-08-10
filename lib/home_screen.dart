@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:map_exam/controller/noteController.dart';
 import 'package:get/get.dart';
+import 'package:map_exam/data/database.dart';
 import 'package:map_exam/note.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -115,7 +116,9 @@ class NoteTile extends StatelessWidget {
                           Icons.delete,
                           color: Colors.blue,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Database().deleteNote(data.id);
+                        },
                       ),
                     ],
                   ),
