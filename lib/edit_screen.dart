@@ -47,26 +47,30 @@ class _EditScreenState extends State<EditScreen> {
         centerTitle: true,
         title: Text("${mode} Note"),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.check_circle,
-              size: 30,
-            ),
-            onPressed: () {
-              if (mode == 'Add') {
-                addNote();
-              }
-              if (mode == 'Edit') {
-                editNote();
-              }
-            },
-          ),
+          mode == 'View'
+              ? const SizedBox()
+              : IconButton(
+                  icon: const Icon(
+                    Icons.check_circle,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    if (mode == 'Add') {
+                      addNote();
+                    }
+                    if (mode == 'Edit') {
+                      editNote();
+                    }
+                  },
+                ),
           IconButton(
               icon: const Icon(
                 Icons.cancel_sharp,
                 size: 30,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Get.back();
+              }),
         ],
       ),
       body: Container(
