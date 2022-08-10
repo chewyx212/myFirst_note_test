@@ -4,12 +4,12 @@ import 'package:map_exam/note.dart';
 
 class Database {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final User? user = FirebaseAuth.instance.currentUser;
+  User? _user = FirebaseAuth.instance.currentUser;
 
   Stream<List<Note>> noteStream() {
     return _db
         .collection("notes")
-        .where("user", isEqualTo: user!.email)
+        .where("user", isEqualTo: _user?.email ?? 'null')
         .snapshots()
         .map((QuerySnapshot query) {
       List<Note> retVal = [];

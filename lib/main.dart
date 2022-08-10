@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
+import 'package:map_exam/controller/noteController.dart';
 import 'package:map_exam/firebase_options.dart';
 import 'package:map_exam/login_screen.dart';
 import 'package:map_exam/home_screen.dart';
@@ -22,10 +24,12 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      initialBinding: InitBinding(),
       home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              Get.find<NoteController>().startStream(snapshot.data!.email!);
               return const HomeScreen();
             } else {
               return const LoginScreen();
@@ -34,5 +38,12 @@ class App extends StatelessWidget {
       // home: const HomeScreen(),
       // home: const EditScreen(),
     );
+  }
+}
+
+class InitBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put<NoteController>(NoteController());
   }
 }
