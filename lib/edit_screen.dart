@@ -84,6 +84,7 @@ class _EditScreenState extends State<EditScreen> {
               decoration: const InputDecoration(
                 hintText: 'Type the title here',
               ),
+              //B8 task done
               readOnly: mode == 'View',
             ),
             const SizedBox(
@@ -99,6 +100,7 @@ class _EditScreenState extends State<EditScreen> {
                 decoration: const InputDecoration(
                   hintText: 'Type the description',
                 ),
+                //B8 task done
                 readOnly: mode == 'View',
               ),
             ),
